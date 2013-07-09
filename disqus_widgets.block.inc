@@ -98,8 +98,25 @@ function disqus_widgets_disqus_recent_helper($byPage = FALSE) {
 
     foreach ($comments as $comment) {
 
+      $date = theme('disqus_widgets_comment_date', array(
+        'comment' => $comment,
+        'date' => $comment->createdAt,
+      ));
+
+      $author = theme('disqus_widgets_author', array(
+        'author' => $comment->author,
+      ));
+
+      $message = theme('disqus_widgets_message', array(
+        'comment' => $comment,
+        'message' => $comment->message,
+      ));
+
       $result['#items'][] = theme('disqus_widgets_comment', array(
         'comment' => $comment,
+        'message' => $message,
+        'author' => $author,
+        'date' => $date,
       ));
     }
   }

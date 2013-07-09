@@ -4,4 +4,4 @@
  * Theme an individual Disqus comment author.
  */
 ?>
-<?= $author->name ?>
+ <span class="disqus-author"><?= $author->name ?></span>
