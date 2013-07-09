@@ -1,1 +1,12 @@
-name = Disqus Widgets
+name = "Disqus Widgets"
+description = "Disqus comment widgets and library integration."
+package = "Disqus"
+core = "7.x"
+php = "5.3"
+
+configure = admin/config/services/disqus
+
+dependencies[] = libraries
+dependencies[] = xautoload
+
+files[] = lib\Drupal\disqus_widgets\DisqusAPI.php
