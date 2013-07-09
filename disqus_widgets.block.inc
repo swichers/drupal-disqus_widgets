@@ -28,6 +28,51 @@ function disqus_widgets_disqus_recent_global_block_view() {
 }
 
 /**
+ * hook_block_view() helper for the commenting area.
+ */
+function disqus_widgets_disqus_comment_area_view() {
+
+  $block = array();
+  $block['subject'] = t('Comments');
+
+  $shortname = variable_get('disqus_forum');
+  if (empty($shortname)) {
+
+    return $block;
+  }
+
+  $identifier = current_path();
+
+  $block['content'] = array('#markup' => theme('disqus_widgets_comment_area', array(
+    'shortname' => $shortname,
+    'identifier' => $identifier,
+  )));
+
+  $disqus_config = 'var disqus_shortname = ' . drupal_json_encode($shortname) . ';';
+  $disqus_config .= 'var disqus_identifier = ' . drupal_json_encode($identifier) . ';';
+
+  $block['content']['#attached'] = array(
+    'js' => array(
+      $disqus_config => array(
+        'type' => 'inline',
+        'scope' => 'header',
+        'group' => JS_LIBRARY,
+        'weight' => 0,
+      ),
+      "//${shortname}.disqus.com/embed.js" => array(
+        'type' => 'external',
+        'scope' => 'footer',
+        'group' => JS_LIBRARY,
+        'async' => TRUE,
+        'weight' => 1,
+      ),
+    ),
+  );
+
+  return $block;
+}
+
+/**
  * Helper function to grab recent comments globally or by page.
  *
  * Used to maintain one piece of logic instead of duplicating it.

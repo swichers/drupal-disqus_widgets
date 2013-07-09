@@ -46,6 +46,11 @@ function disqus_widgets_block_info() {
     'cache' => DRUPAL_CACHE_PER_ROLE,
   );
 
+  $blocks['disqus_comment_area'] = array(
+    'info' => t('Disqus Comment Area'),
+    'cache' => DRUPAL_CACHE_PER_ROLE | DRUPAL_CACHE_PER_ROLE,
+  );
+
   return $blocks;
 }
 
@@ -61,6 +66,9 @@ function disqus_widgets_block_view($delta = '') {
 
     case 'disqus_recent_global':
       return disqus_widgets_disqus_recent_global_block_view();
+
+    case 'disqus_comment_area':
+      return disqus_widgets_disqus_comment_area_view();
   }
 }
 
@@ -80,6 +88,12 @@ function disqus_widgets_theme($existing, $type, $theme, $path) {
   $themes['disqus_widgets_author'] = array(
     'variables' => array('author' => NULL),
     'template' => 'disqus-widgets-author',
+    'path' => $path . '/theme',
+  );
+
+  $themes['disqus_widgets_comment_area'] = array(
+    'variables' => array('shortname' => NULL, 'identifier' => NULL),
+    'template' => 'disqus-widgets-comment-area',
     'path' => $path . '/theme',
   );
 
