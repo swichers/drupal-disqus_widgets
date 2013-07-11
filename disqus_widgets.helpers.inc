@@ -67,8 +67,11 @@ function disqus_widgets_get_comments($limit = 3, $page = NULL) {
     try {
 
       $disqus = disqus_widgets_disqus();
-      $comments = $disqus->threads->listPosts($args);
-      cache_set($cid, $comments, 'cache', CACHE_TEMPORARY);
+      if (!empty($disqus)) {
+
+        $comments = $disqus->threads->listPosts($args);
+        cache_set($cid, $comments, 'cache', CACHE_TEMPORARY);
+      }
     }
     catch (Disqus\DisqusAPIError $x) {
 
