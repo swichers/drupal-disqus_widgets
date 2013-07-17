@@ -86,8 +86,7 @@ function disqus_widgets_disqus_comment_area_view() {
 function disqus_widgets_disqus_recent_helper($byPage = FALSE) {
 
   $result = NULL;
-  $url = $byPage ? url(current_path(), array('absolute' => TRUE)) : NULL;
-  $comments = disqus_widgets_get_comments(3, $url);
+  $comments = disqus_widgets_get_comments(3, NULL, current_path());
 
   if (!empty($comments)) {
 

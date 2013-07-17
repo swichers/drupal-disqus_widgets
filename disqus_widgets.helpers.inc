@@ -45,10 +45,15 @@ function disqus_widgets_handle_disqusapierror(Disqus\DisqusAPIError $error, $cod
  * @param string $page
  *   The page to filter by.
  *
+ * @param string $ident
+ *   The ident to filter by.
+ *
  * @return array|bool
  *   An array of comments or FALSE on failure.
  */
-function disqus_widgets_get_comments($limit = 3, $page = NULL) {
+function disqus_widgets_get_comments($limit = 3, $page = NULL, $ident = NULL) {
+
+  $comments = FALSE;
 
   $args = array(
     'forum' => variable_get('disqus_forum'),
@@ -58,6 +63,10 @@ function disqus_widgets_get_comments($limit = 3, $page = NULL) {
   if (!empty($page)) {
 
     $args['thread'] = 'link:' . $page;
+  }
+  else if (!empty($ident)) {
+
+    $args['thread'] = 'ident:' . $ident;
   }
 
   $cid = __FUNCTION__ . ':' . serialize($args);
