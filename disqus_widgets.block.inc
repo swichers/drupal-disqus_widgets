@@ -35,21 +35,20 @@ function disqus_widgets_disqus_comment_area_view() {
   $block = array();
   $block['subject'] = t('Comments');
 
-  $shortname = variable_get('disqus_forum');
-  if (empty($shortname)) {
+  $settings = disqus_widgets_settings();
+  if (empty($settings['shortname'])) {
 
     return $block;
   }
 
-  $identifier = current_path();
+  $block['content'] = array(
+    '#theme' => 'disqus_widgets_comment_area',
+    '#shortname' => $settings['shortname'],
+    '#identifier' => $settings['identifier'],
+  );
 
-  $block['content'] = array('#markup' => theme('disqus_widgets_comment_area', array(
-    'shortname' => $shortname,
-    'identifier' => $identifier,
-  )));
-
-  $disqus_config = 'var disqus_shortname = ' . drupal_json_encode($shortname) . ';';
-  $disqus_config .= 'var disqus_identifier = ' . drupal_json_encode($identifier) . ';';
+  $disqus_config = 'var disqus_shortname = ' . drupal_json_encode($settings['shortname']) . ';';
+  $disqus_config .= 'var disqus_identifier = ' . drupal_json_encode($settings['identifier']) . ';';
 
   $block['content']['#attached'] = array(
     'js' => array(
@@ -59,7 +58,7 @@ function disqus_widgets_disqus_comment_area_view() {
         'group' => JS_LIBRARY,
         'weight' => 0,
       ),
-      "//${shortname}.disqus.com/embed.js" => array(
+      "//${settings['shortname']}.disqus.com/embed.js" => array(
         'type' => 'external',
         'scope' => 'footer',
         'group' => JS_LIBRARY,

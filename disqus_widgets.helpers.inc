@@ -55,8 +55,10 @@ function disqus_widgets_get_comments($limit = 3, $page = NULL, $ident = NULL) {
 
   $comments = FALSE;
 
+  $settings = disqus_widgets_settings();
+
   $args = array(
-    'forum' => variable_get('disqus_forum'),
+    'forum' => $settings['shortname'],
     'limit' => intval($limit),
   );
 
@@ -113,16 +115,39 @@ function disqus_widgets_disqus() {
 
   $disqus = &drupal_static(__FUNCTION__);
 
-  $key = variable_get('disqus_api_secret');
-
-  if (empty($disqus) && !empty($key)) {
+  $settings = disqus_widgets_settings();
+  if (empty($disqus) && !empty($settings['api_secret'])) {
 
     /*
       Use our DisqusAPI implementation to work around a problem with the
       default Disqus library as currently packaged.
      */
-    $disqus = new \Drupal\disqus_widgets\DisqusAPI($key);
+    $disqus = new \Drupal\disqus_widgets\DisqusAPI($settings['api_secret']);
   }
 
   return $disqus;
+}
+
+/**
+ * Get the settings to use for Disqus.
+ *
+ * @return array
+ *   An array of settings.
+ */
+function disqus_widgets_settings() {
+
+  $settings = &drupal_static(__FUNCTION__, array());
+
+  if (empty($settings)) {
+
+    $settings = array(
+      'identifier' => current_path(),
+      'shortname' => variable_get('disqus_forum'),
+      'api_secret' => variable_get('disqus_api_secret'),
+    );
+
+    drupal_alter(__FUNCTION__, $settings);
+  }
+
+  return $settings;
 }
