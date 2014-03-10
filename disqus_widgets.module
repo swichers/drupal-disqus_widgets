@@ -48,7 +48,7 @@ function disqus_widgets_block_info() {
 
   $blocks['disqus_comment_area'] = array(
     'info' => t('Disqus Comment Area'),
-    'cache' => DRUPAL_CACHE_PER_ROLE | DRUPAL_CACHE_PER_ROLE,
+    'cache' => DRUPAL_CACHE_PER_PAGE | DRUPAL_CACHE_PER_ROLE,
   );
 
   return $blocks;
